@@ -8,7 +8,13 @@ const Bookshelf = ({ title, books }) => (
     <div className="bookshelf-books">
       <ol className="books-grid">
         {books.map(b => (
-          <li key={b.title}><Book title={b.title} authors={b.authors} cover={b.cover} /></li>
+          <li key={b.title}>
+            <Book
+              title={b.title}
+              authors={b.authors}
+              cover={b.imageLinks.thumbnail}
+            />
+          </li>
         ))}
       </ol>
     </div>
