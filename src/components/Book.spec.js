@@ -1,27 +1,28 @@
 /* global describe, it, expect */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { spy } from 'sinon';
 import Book from './Book';
 
 describe('Book component', () => {
-  const coverUrl = 'cover-url';
-  const book = <Book title="React" authors="Jean Silva" cover={coverUrl} />;
+  const updateBook = spy();
+  const bookMock = {
+    id: 'abc',
+    title: 'React',
+    authors: ['Jean Silva'],
+    imageLinks: {
+      thumbnail: 'thumb.jpg',
+    },
+  };
+
+  const book = (<Book
+    book={bookMock}
+    onUpdate={updateBook}
+  />);
   const wrapper = mount(book);
 
   it('should render successfully', () => {
     expect(shallow(book).find('.book').exists()).toBeTruthy();
-  });
-
-  it('should contain a prop title', () => {
-    expect(wrapper.prop('title')).toEqual('React');
-  });
-
-  it('should contain a prop authors', () => {
-    expect(wrapper.prop('authors')).toEqual('Jean Silva');
-  });
-
-  it('should contain a prop cover', () => {
-    expect(wrapper.prop('cover')).toEqual(coverUrl);
   });
 
   it('should render a title', () => {
@@ -57,5 +58,10 @@ describe('Book component', () => {
     expect(optionTexts).toEqual(texts);
     expect(optionValues).toEqual(values);
     expect(wrapper.containsMatchingElement(elementDisabled)).toBeTruthy();
+  });
+
+  it('should call onUpdateBook', () => {
+    wrapper.find('.book-top .book-shelf-changer > select').simulate('change', { target: { value: 'currentlyReading' } });
+    expect(updateBook.calledOnce).toBeTruthy();
   });
 });
