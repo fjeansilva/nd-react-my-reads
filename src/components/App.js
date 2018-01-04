@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import BookShelf from './Bookshelf';
-import { getAll } from '../utils/BooksAPI';
+import Bookshelf from './Bookshelf';
+import { getAll, update } from '../utils/BooksAPI';
 
 class BooksApp extends Component {
   state = {
@@ -12,9 +12,28 @@ class BooksApp extends Component {
     getAll().then((books) => this.setState({ books }));
   }
 
+  filterByShelf = (shelf) => {
+    return this.state.books.filter(b => b.shelf === shelf);
+  }
+
+  updateBook = (book, shelf) => {
+
+    // update book in state
+    this.setState((prevState) => {
+      return {
+        books: prevState.books.map(b => {
+          if (b.id === book.id) b.shelf = shelf;
+          return b;
+        })
+      }
+    });
+
+    // update book in BooksAPI
+    update(book, shelf);
+  }
+
   render() {
     const { books } = this.state;
-
     return (
       <div className="app">
         <div className="list-books">
@@ -22,9 +41,9 @@ class BooksApp extends Component {
             <h1>MyReads</h1>
           </div>
           <div className="list-books-content">
-            <BookShelf title="Currently Reading" books={books} />
-            <BookShelf title="Want to Read" books={books} />
-            <BookShelf title="Read" books={books} />
+            <Bookshelf title="Currently Reading" books={this.filterByShelf('currentlyReading')} onUpdateBook={this.updateBook} />
+            <Bookshelf title="Want to Read" books={this.filterByShelf('wantToRead')} onUpdateBook={this.updateBook} />
+            <Bookshelf title="Read" books={this.filterByShelf('read')} onUpdateBook={this.updateBook} />
           </div>
         </div>
       </div>
