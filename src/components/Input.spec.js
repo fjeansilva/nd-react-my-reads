@@ -12,11 +12,11 @@ describe('Input component', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  it('Should render a input', () => {
+  it('Should render an input', () => {
     expect(wrapper.find('input').exists()).toBeTruthy();
   });
 
-  it('Should contain a onChange prop', () => {
+  it('Should contain an onChange prop', () => {
     expect(wrapper.prop('onChange')).toEqual(onChange);
   });
 
