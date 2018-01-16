@@ -39,6 +39,19 @@ describe('Book component', () => {
     expect(authors.text()).toEqual('Jean Silva');
   });
 
+  it('Not should render authors', () => {
+    const mock = {
+      id: 'abc',
+      title: 'React',
+      imageLinks: {
+        thumbnail: 'thumb.jpg',
+      },
+    };
+    const component = mount(<Book book={mock} onUpdate={updateBook} />);
+    const authors = component.find('.book-authors');
+    expect(authors.text()).toEqual('');
+  });
+
   it('should render a cover', () => {
     expect(wrapper.find('.book-top > .book-cover').exists()).toBeTruthy();
   });
@@ -52,8 +65,8 @@ describe('Book component', () => {
     const optionTexts = options.map(node => node.text());
     const optionValues = options.map(node => node.instance().value);
     const texts = ['Move to...', 'Currently Reading', 'Want to Read', 'Read', 'None'];
-    const values = ['none', 'currentlyReading', 'wantToRead', 'read', 'none'];
-    const elementDisabled = <option value="none" disabled>Move to...</option>;
+    const values = ['', 'currentlyReading', 'wantToRead', 'read', 'none'];
+    const elementDisabled = <option value="" disabled>Move to...</option>;
     expect(options.length).toBe(5);
     expect(optionTexts).toEqual(texts);
     expect(optionValues).toEqual(values);
