@@ -10,6 +10,7 @@ jest.mock('../utils/BooksAPI.js');
 describe('SearchBooks component', () => {
   let wrapper;
   let books;
+  let updateBook;
   beforeEach(() => {
     wrapper = mount(<SearchBooks query="" />);
     updateBook = spy();
