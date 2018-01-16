@@ -83,7 +83,7 @@ describe('BookApp component', () => {
     expect(filterByShelf).toHaveBeenCalledTimes(3);
   });
 
-  fit('should change book of shelf Want to Read to Currently Reading', () => {
+  it('should change book of shelf Want to Read to Currently Reading', () => {
     wrapper.setState({ books });
     expect(wrapper.find(Bookshelf).first().props().books.length).toBe(0);
     wrapper.find('.book-top .book-shelf-changer > select').first().simulate('change', { target: { value: 'currentlyReading' } });
