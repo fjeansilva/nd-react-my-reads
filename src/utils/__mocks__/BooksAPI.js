@@ -20,7 +20,25 @@ const books = [
   {
     id: 'abce',
     title: 'React',
-    authors: ['Nils Hartmann Oliver', 'Zeigermann'],
+    authors: ['Slash', 'Axl Rose'],
+    imageLinks: {
+      thumbnail: 'http://books.google.com/books/content?id=IOejDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
+    },
+    shelf: 'wantToRead',
+  },
+  {
+    id: 'abced',
+    title: 'React',
+    authors: ['Bruce Dickinson', 'Dave Murray'],
+    imageLinks: {
+      thumbnail: 'http://books.google.com/books/content?id=IOejDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
+    },
+    shelf: 'wantToRead',
+  },
+  {
+    id: 'abcexs',
+    title: 'React',
+    authors: ['Angus Young', 'Bono Scoth'],
     imageLinks: {
       thumbnail: 'http://books.google.com/books/content?id=IOejDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
     },
@@ -34,4 +52,10 @@ export const update = (book, shelf) => {
   const b = Object.assign({}, book);
   b.shelf = shelf;
   return Promise.resolve({ book: b });
+};
+export const search = (query, maxResults) => {
+  if (query === 'error') return Promise.reject();
+  if (query === 'javascript') return Promise.resolve({ items: [] });
+  const data = books.filter(b => b.title.toUpperCase() === query.toUpperCase());
+  return Promise.resolve(data);
 };
