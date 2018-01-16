@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import Bookshelf from './Bookshelf';
+import Search from './Search';
 import { getAll, update } from '../utils/BooksAPI';
 
 class BooksApp extends Component {
   state = {
-    books: []
+    books: [],
+    showSearchPage: false
   }
 
   componentDidMount() {
@@ -33,9 +35,12 @@ class BooksApp extends Component {
   }
 
   render() {
-    const { books } = this.state;
+    const { books, showSearchPage } = this.state;
     return (
       <div className="app">
+        {showSearchPage ? (
+          <Search />
+        ) : (
         <div className="list-books">
           <div className="list-books-title">
             <h1>MyReads</h1>
@@ -45,7 +50,11 @@ class BooksApp extends Component {
             <Bookshelf title="Want to Read" books={this.filterByShelf('wantToRead')} onUpdateBook={this.updateBook} />
             <Bookshelf title="Read" books={this.filterByShelf('read')} onUpdateBook={this.updateBook} />
           </div>
+          <div className="open-search">
+            <a onClick={() => this.setState({ showSearchPage: true })}>Add a Book</a>
+          </div>
         </div>
+        )}
       </div>
     )
   }
