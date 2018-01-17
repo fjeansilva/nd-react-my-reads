@@ -7,11 +7,12 @@ import { getAll, update } from '../utils/BooksAPI';
 
 class BooksApp extends Component {
   state = {
-    books: []
+    books: [],
+    loading: true
   }
 
   componentDidMount() {
-    getAll().then((books) => this.setState({ books }));
+    getAll().then((books) => this.setState({ books, loading: false }));
   }
 
   filterByShelf = (shelf) => {
@@ -35,7 +36,8 @@ class BooksApp extends Component {
   }
 
   render() {
-    const { books } = this.state;
+    const { loading } = this.state;
+
     return (
       <div className="app">
         <Route exact path="/" render={() => (
@@ -44,9 +46,9 @@ class BooksApp extends Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-              <Bookshelf title="Currently Reading" books={this.filterByShelf('currentlyReading')} onUpdateBook={this.updateBook} />
-              <Bookshelf title="Want to Read" books={this.filterByShelf('wantToRead')} onUpdateBook={this.updateBook} />
-              <Bookshelf title="Read" books={this.filterByShelf('read')} onUpdateBook={this.updateBook} />
+              <Bookshelf title="Currently Reading" books={this.filterByShelf('currentlyReading')} onUpdateBook={this.updateBook} loading={loading} />
+              <Bookshelf title="Want to Read" books={this.filterByShelf('wantToRead')} onUpdateBook={this.updateBook} loading={loading} />
+              <Bookshelf title="Read" books={this.filterByShelf('read')} onUpdateBook={this.updateBook} loading={loading} />
             </div>
             <div className="open-search">
               <Link to="/search">Add a Book</Link>
