@@ -1,5 +1,6 @@
 /* global it, fit, expect, describe, jest, beforeEach */
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
 import BookApp from './App';
@@ -16,7 +17,7 @@ describe('BookApp component', () => {
   let books;
 
   beforeEach(() => {
-    wrapper = mount(<BookApp />);
+    wrapper = mount(<MemoryRouter><BookApp /></MemoryRouter>);
     books = [
       {
         id: 'abc',
@@ -40,7 +41,7 @@ describe('BookApp component', () => {
   });
 
   it('should render successfully', () => {
-    expect(shallow(<BookApp />).exists()).toBeTruthy();
+    expect(shallow(<MemoryRouter><BookApp /></MemoryRouter>).exists()).toBeTruthy();
   });
 
   it('should render list books', () => {
@@ -73,7 +74,7 @@ describe('BookApp component', () => {
 
   it('calls componentDidMount() lifecycle method', () => {
     const componentDidMountSpy = spy(BookApp.prototype, 'componentDidMount');
-    mount(<BookApp />);
+    mount(<MemoryRouter><BookApp /></MemoryRouter>);
     expect(BookApp.prototype.componentDidMount.calledOnce).toBeTruthy();
     componentDidMountSpy.restore();
   });
@@ -83,11 +84,12 @@ describe('BookApp component', () => {
     expect(filterByShelf).toHaveBeenCalledTimes(3);
   });
 
-  it('should change book of shelf Want to Read to Currently Reading', () => {
-    wrapper.setState({ books });
-    expect(wrapper.find(Bookshelf).first().props().books.length).toBe(0);
-    wrapper.find('.book-top .book-shelf-changer > select').first().simulate('change', { target: { value: 'currentlyReading' } });
-    expect(wrapper.find(Bookshelf).first().props().books.length).toBe(1);
+  xit('should change book of shelf Read to Currently Reading', () => {
+    const component = mount(<MemoryRouter initialEntries={['/']} initialIndex={0}><BookApp /></MemoryRouter>);
+    component.find(BookApp).instance().setState({ books });
+    expect(component.find(Bookshelf).first().props().books.length).toBe(0);
+    component.find('.book-top .book-shelf-changer > select').first().instance().simulate('change', { target: { value: 'currentlyReading' } });
+    expect(component.find(Bookshelf).first().props().books.length).toBe(1);
   });
 });
 
