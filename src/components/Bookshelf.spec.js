@@ -3,6 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { spy } from 'sinon';
 import Bookshelf from './Bookshelf';
+import EmptyShelf from './EmptyShelf';
 
 describe('Bookshelf component', () => {
   const onUpdateBook = spy();
@@ -24,7 +25,7 @@ describe('Bookshelf component', () => {
       },
     },
   ];
-  const element = (<Bookshelf title="Reading" books={books} onUpdateBook={onUpdateBook} />);
+  const element = (<Bookshelf title="Reading" books={books} onUpdateBook={onUpdateBook} loading={false} />);
   const wrapper = mount(element);
   const grid = wrapper.find('.bookshelf-books > ol.books-grid');
 
@@ -58,5 +59,15 @@ describe('Bookshelf component', () => {
   it('should call onUpdateBook', () => {
     wrapper.find('.book-top .book-shelf-changer > select').first().simulate('change', { target: { value: 'currentlyReading' } });
     expect(onUpdateBook.calledOnce).toBeTruthy();
+  });
+
+  it('Should render a EmptyShelf', () => {
+    const component = mount(<Bookshelf
+      title="Reading"
+      books={[]}
+      onUpdateBook={onUpdateBook}
+      loading={false}
+    />);
+    expect(component.find(EmptyShelf).exists()).toBeTruthy();
   });
 });
