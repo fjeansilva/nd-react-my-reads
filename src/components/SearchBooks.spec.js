@@ -12,7 +12,7 @@ describe('SearchBooks component', () => {
   let books;
   let updateBook;
   beforeEach(() => {
-    wrapper = mount(<SearchBooks query="" />);
+    wrapper = mount(<SearchBooks query="" shelf={[]} />);
     updateBook = spy();
     books = [
       {
@@ -55,32 +55,32 @@ describe('SearchBooks component', () => {
 
   it('calls componentWillReceiveProps() lifecycle method', () => {
     const componentWillReceivePropsSpy = spy(SearchBooks.prototype, 'componentWillReceiveProps');
-    const wrapperSearch = mount(<SearchBooks query="" />);
+    const wrapperSearch = mount(<SearchBooks query="" shelf={[]} />);
     wrapperSearch.setProps({ query: 'art' });
     expect(SearchBooks.prototype.componentWillReceiveProps.calledOnce).toBeTruthy();
     componentWillReceivePropsSpy.restore();
   });
 
   it('Should pass a value to query prop and return three books', async () => {
-    const wrapperSearch = shallow(<SearchBooks query="" />);
+    const wrapperSearch = shallow(<SearchBooks query="" shelf={[]} />);
     await wrapperSearch.instance().componentWillReceiveProps({ query: 'React' });
     expect(wrapperSearch.state().books.length).toBe(3);
   });
 
   it('Should pass a value to query prop and return nothing', async () => {
-    const wrapperSearch = shallow(<SearchBooks query="" />);
+    const wrapperSearch = shallow(<SearchBooks query="" shelf={[]} />);
     await wrapperSearch.instance().componentWillReceiveProps({ query: 'javascript' });
     expect(wrapperSearch.state().books.length).toBe(0);
   });
 
   it('Should contain a list with three itens', async () => {
-    const component = mount(<SearchBooks query="" />);
+    const component = mount(<SearchBooks query="" shelf={[]} />);
     await component.instance().componentWillReceiveProps({ query: 'React' });
     expect(component.html()).toEqual(templateHTML);
   });
 
   it('Should call update function', () => {
-    const component = mount(<SearchBooks query="" />);
+    const component = mount(<SearchBooks query="" shelf={[]} />);
     component.setState({ books });
     expect(component.state().books.length).toBe(2);
     const bookActual = component.state().books;
