@@ -36,7 +36,7 @@ class BooksApp extends Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, books } = this.state;
 
     return (
       <div className="app">
@@ -55,7 +55,9 @@ class BooksApp extends Component {
             </div>
           </div>
         )} />
-        <Route path="/search" component={Search} />
+        <Route path="/search" render={() => (
+          <Search shelf={books} />
+        )} />
       </div>
     )
   }
