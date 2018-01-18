@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { search } from '../utils/BooksAPI';
+import { search, update } from '../utils/BooksAPI';
 import Book from './Book';
-import { update } from '../utils/BooksAPI';
 
 class SearchBooks extends Component {
   state = {
@@ -11,6 +10,8 @@ class SearchBooks extends Component {
   
   componentWillReceiveProps(nextProps, nextState) {
     const { query } = nextProps;
+    const { shelf } = this.props;
+
     this.setState({ books: [] });
     
     if(query.length >= 3) {
@@ -18,7 +19,14 @@ class SearchBooks extends Component {
       .then(data => {
         const { items } = data;
         const books = items ? [] : data;
-        this.setState({ books })
+
+        books.map(b => { 
+          const book = shelf.filter(s => s.id === b.id); 
+          book.length > 0 ? b.shelf = book[0].shelf : b; 
+          return b; 
+        });
+        
+        this.setState({ books });
       })
     }
   }
@@ -53,6 +61,7 @@ class SearchBooks extends Component {
 
 SearchBooks.propTypes = {
   query: PropTypes.string.isRequired,
+  shelf: PropTypes.array.isRequired
 };
 
 export default SearchBooks;
