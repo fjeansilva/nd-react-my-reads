@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Debounce } from 'react-throttle';
 import { search } from '../utils/BooksAPI';
 import { Link } from 'react-router-dom';
 import Input from './Input';
@@ -21,21 +23,28 @@ class Search extends Component {
 
   render() {
     const { books, query } = this.state;
+    const { shelf } = this.props;
 
     return (
       <div className="search-books">
         <div className="search-books-bar">
           <Link to="/" className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
-            <Input onChange={this.handleChange} placeholder="Search by title or author" />
+            <Debounce time="400" handler="onChange">
+              <Input onChange={this.handleChange} placeholder="Search by title or author" />
+            </Debounce>
           </div>
         </div>
         <div className="search-books-results">
-          <SearchBooks query={query} />
+          <SearchBooks query={query} shelf={shelf}/>
         </div>
       </div>
     )
   }
+}
+
+Search.propTypes = {
+  shelf: PropTypes.array.isRequired
 }
 
 export default Search;
